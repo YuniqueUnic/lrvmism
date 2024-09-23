@@ -38,7 +38,7 @@ mod tests {
         assert_eq!(result.is_ok(), true);
 
         let (r, program) = result.unwrap();
-        let expressions = vec![Token::Experssion {
+        let expressions = vec![Token::Expression {
             left: Box::new(Token::Integer { value: 1 }),
             op: Box::new(Token::AdditionOperator),
             right: Box::new(Token::Integer { value: 2 }),

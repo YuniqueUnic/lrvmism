@@ -16,7 +16,7 @@ pub fn expression_parser(input: &str) -> IResult<&str, Token> {
             multispace0,
             terminated(
                 map(tuple((integer, operator, integer)), |(left, op, right)| {
-                    Token::Experssion {
+                    Token::Expression {
                         left: Box::new(left),
                         op: Box::new(op),
                         right: Box::new(right),
