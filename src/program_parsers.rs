@@ -39,9 +39,47 @@ mod tests {
 
         let (r, program) = result.unwrap();
         let expressions = vec![Token::Expression {
-            left: Box::new(Token::Integer { value: 1 }),
-            op: Box::new(Token::AdditionOperator),
-            right: Box::new(Token::Integer { value: 2 }),
+            left: Box::new(Token::Term {
+                left: Box::new(Token::Factor {
+                    value: Box::new(Token::Integer { value: 1 }),
+                }),
+                right: vec![],
+            }),
+            right: vec![(
+                Token::AdditionOperator,
+                Token::Term {
+                    left: Box::new(Token::Factor {
+                        value: Box::new(Token::Integer { value: 2 }),
+                    }),
+                    right: vec![],
+                },
+            )],
+        }];
+        assert!(r.is_empty());
+        assert_eq!(Token::Program { expressions }, program);
+    }
+
+    #[test]
+    fn test_parse_program_2() {
+        let test_program = "3*4";
+
+        let result = program_parser(test_program);
+        assert_eq!(result.is_ok(), true);
+
+        let (r, program) = result.unwrap();
+        let expressions = vec![Token::Expression {
+            left: Box::new(Token::Term {
+                left: Box::new(Token::Factor {
+                    value: Box::new(Token::Integer { value: 3 }),
+                }),
+                right: vec![(
+                    Token::MultiplicationOperator,
+                    Token::Factor {
+                        value: Box::new(Token::Integer { value: 4 }),
+                    },
+                )],
+            }),
+            right: vec![],
         }];
         assert!(r.is_empty());
         assert_eq!(Token::Program { expressions }, program);

@@ -3,11 +3,16 @@ use nom::{
     character::complete::{line_ending, multispace0},
     combinator::{eof, map},
     error::context,
+    multi::many0,
     sequence::{preceded, terminated, tuple},
     IResult,
 };
 
-use crate::{operand_parsers::integer, operator_parsers::operator, token::Token};
+use crate::{
+    operator_parsers::{addition_operator, substraction_operator},
+    term_parsers::term_parser,
+    token::Token,
+};
 
 pub fn expression_parser(input: &str) -> IResult<&str, Token> {
     context(
@@ -15,13 +20,19 @@ pub fn expression_parser(input: &str) -> IResult<&str, Token> {
         preceded(
             multispace0,
             terminated(
-                map(tuple((integer, operator, integer)), |(left, op, right)| {
-                    Token::Expression {
+                map(
+                    tuple((
+                        term_parser,
+                        many0(tuple((
+                            alt((addition_operator, substraction_operator)),
+                            term_parser,
+                        ))),
+                    )),
+                    |(left, right)| Token::Expression {
                         left: Box::new(left),
-                        op: Box::new(op),
-                        right: Box::new(right),
-                    }
-                }),
+                        right,
+                    },
+                ),
                 alt((multispace0, line_ending, eof)),
             ),
         ),

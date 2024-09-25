@@ -21,7 +21,7 @@ pub fn operator(input: &str) -> IResult<&str, Token> {
     )(input)
 }
 
-fn addition_operator(input: &str) -> IResult<&str, Token> {
+pub fn addition_operator(input: &str) -> IResult<&str, Token> {
     context(
         "addition_operator",
         preceded(
@@ -34,7 +34,7 @@ fn addition_operator(input: &str) -> IResult<&str, Token> {
     )(input)
 }
 
-fn substraction_operator(input: &str) -> IResult<&str, Token> {
+pub fn substraction_operator(input: &str) -> IResult<&str, Token> {
     context(
         "substraction_operator",
         preceded(
@@ -47,7 +47,7 @@ fn substraction_operator(input: &str) -> IResult<&str, Token> {
     )(input)
 }
 
-fn multiplication_operator(input: &str) -> IResult<&str, Token> {
+pub fn multiplication_operator(input: &str) -> IResult<&str, Token> {
     context(
         "multiplication_operator",
         preceded(
@@ -60,7 +60,7 @@ fn multiplication_operator(input: &str) -> IResult<&str, Token> {
     )(input)
 }
 
-fn division_operator(input: &str) -> IResult<&str, Token> {
+pub fn division_operator(input: &str) -> IResult<&str, Token> {
     context(
         "division_operator",
         preceded(
