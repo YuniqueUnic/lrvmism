@@ -15,7 +15,33 @@ use crate::{expression_parsers::expression_parser, token::Token};
 /// # Example
 ///
 /// ```
-/// (1+2)
+/// use lrvmism::factors_parsers::factor_parser;
+/// use lrvmism::token::Token;
+/// fn test_integer(){
+///     let test = "(1+2)";
+///     let expressions = vec![Token::Expression {
+///        left: Box::new(Token::Term {
+///            left: Box::new(Token::Factor {
+///                value: Box::new(Token::Integer { value: 1 }),
+///            }),
+///            right: vec![],
+///        }),
+///        right: vec![(
+///            Token::AdditionOperator,
+///            Token::Term {
+///                left: Box::new(Token::Factor {
+///                    value: Box::new(Token::Integer { value: 2 }),
+///                }),
+///                right: vec![],
+///            },
+///        )],
+///     }];
+///     let result = factor_parser(test);
+///     assert!(result.is_ok());
+///     let (_reminder, program) = result.unwrap();
+///     assert_eq!(Token::Program { expressions }, program);
+///     assert!(_reminder.is_empty());
+/// }
 /// ```
 ///
 pub fn factor_parser(input: &str) -> IResult<&str, Token> {
@@ -43,8 +69,21 @@ pub fn factor_parser(input: &str) -> IResult<&str, Token> {
 /// # Example
 ///
 /// ```
-/// x = 4
-/// y = -4
+/// use lrvmism::factors_parsers::integer_parser;
+/// use lrvmism::token::Token;
+/// fn test_integer(){
+///     let test_arr = ["4"," -4 "];
+///     for input in test_arr {
+///         let expect = Token::Integer {
+///             value: input.parse::<i64>().unwrap(),
+///         };
+///         let result = integer_parser(input);
+///         assert!(result.is_ok());
+///         let (_reminder, value) = result.unwrap();
+///         assert_eq!(expect, value);
+///         assert!(_reminder.is_empty());
+///     }
+/// }
 /// ```
 pub fn integer_parser(input: &str) -> IResult<&str, Token> {
     context(
@@ -79,8 +118,21 @@ pub fn integer_parser(input: &str) -> IResult<&str, Token> {
 /// # Example
 ///
 /// ```
-/// x = 4.5
-/// y = -4.5
+/// use lrvmism::factors_parsers::integer_parser;
+/// use lrvmism::token::Token;
+/// fn test_integer(){
+///     let test_arr = ["4.5"," -4.5 "];
+///     for input in test_arr {
+///         let expect = Token::Float {
+///             value: input.parse::<f64>().unwrap(),
+///         };
+///         let result = integer_parser(input);
+///         assert!(result.is_ok());
+///         let (_reminder, value) = result.unwrap();
+///         assert_eq!(expect, value);
+///         assert!(_reminder.is_empty());
+///     }
+/// }
 /// ```
 pub fn float64_parser(input: &str) -> IResult<&str, Token> {
     context(

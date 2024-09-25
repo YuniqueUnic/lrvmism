@@ -20,7 +20,11 @@ use crate::{
 /// # Example
 ///
 /// ```
-/// (3*4)*2
+/// use lrvmism::term_parsers::term_parser;
+/// fn test_parse_nested_term() {
+///     let result = term_parser("(3*4)*2");
+///     assert_eq!(result.is_ok(), true);
+/// }
 /// ```
 ///
 pub fn term_parser(input: &str) -> IResult<&str, Token> {
